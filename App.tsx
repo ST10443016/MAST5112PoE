@@ -6,6 +6,7 @@ import {
   TouchableHighlight,
   StyleSheet,
   ScrollView,
+  Alert,
 } from 'react-native';
 
 import { Picker } from '@react-native-picker/picker';
@@ -44,6 +45,7 @@ function App(): JSX.Element {
   const [price, setPrice] = useState<string>('');
   const [course, setCourse] = useState<string>('');
   const [menulist, setMenuList] = useState<Menu[]>([]);
+  const [errors, setErrors] = useState<{[key: string]: string}>({});
 
   const totalMenuItems = useMemo(() => menulist.length, [menulist]);
 
@@ -53,25 +55,27 @@ function App(): JSX.Element {
     let thePrice = parseFloat(price);
     let theCourse = course;
 
-    let errors: string[] = [];
+    let newErrors: {[key: string]: string} = {};
 
     if (!theName) {
-      errors.push("Dish name is required")
+      newErrors.name = "Dish name is required";
     }
 
     if (!theDescription) {
-      errors.push("Description is required")
+      newErrors.description = "Description is required";
     }
 
     if (!theCourse) {
-      errors.push("Course is required")
+      newErrors.course = "Course is required";
     }
 
     if (isNaN(thePrice) || thePrice <= 0) {
-      errors.push("The price must be a positive number");
+      newErrors.price = "The price must be a positive number";
     }
 
-    if (errors.length > 0) {
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
       return;
     }
 
@@ -81,74 +85,93 @@ function App(): JSX.Element {
     setDescription('');
     setPrice('');
     setCourse('');
+    Alert.alert("Success", "Dish added successfully!");
   };
 
   return (
     <ScrollView>
       <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Christoffel</Text>
-      </View>
-      <View>
-        <Text style={styles.summaryText}>Total: {totalMenuItems}</Text>
-      </View>
-      <View style={styles.arrayContainer}>
-        <Text style={styles.arrayHeaderText}>Menu</Text>
-        {menulist.map((menu, index) => (
-          <Text key={index} style={styles.arrayText}>
-            {menu.name} - {menu.description} - R{menu.price} - {menu.course}
-          </Text>
-        ))}
-      </View>
-      <View style={styles.inputContainer}>
-        <View>
-          <Text style={styles.subHeadingText}>Name</Text>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Christoffel</Text>
         </View>
-        <TextInput
-          placeholder='Enter dish name'
-          onChangeText={setName}
-          value={name}
-          style={styles.input}
-        />
         <View>
-          <Text style={styles.subHeadingText}>Description</Text>
+          <Text style={styles.summaryText}>Total: {totalMenuItems}</Text>
         </View>
-        <TextInput
-          placeholder='Enter description'
-          onChangeText={setDescription}
-          value={description}
-          style={styles.input}
-        />
-        <View>
-          <Text style={styles.subHeadingText}>Price</Text>
-        </View>
-        <TextInput
-          placeholder='Enter price'
-          onChangeText={setPrice}
-          value={price}
-          keyboardType="numeric"
-          style={styles.input}
-        />
-        <View>
-          <Text style={styles.subHeadingText}>Courses</Text>
-        </View>
-        <View style={styles.pickerContainer}>
-        <Picker
-          onValueChange={(itemValue: string) => { setCourse(itemValue); }}
-          selectedValue={course}
-          style={styles.picker}
-        >
-          {courseArray.map((item) => (
-            <Picker.Item label={item.name} value={item.name} key={item.id} />
+        <View style={styles.arrayContainer}>
+          <Text style={styles.arrayHeaderText}>Menu</Text>
+          {menulist.map((menu, index) => (
+            <Text key={index} style={styles.arrayText}>
+              {menu.name} - {menu.description} - R{menu.price} - {menu.course}
+            </Text>
           ))}
-        </Picker>
         </View>
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableHighlight onPress={handleSaveDish} style={styles.button}>
-          <Text style={styles.buttonText}>SAVE</Text>
-        </TouchableHighlight>
-      </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.formHeaderText}>Add Menu Item</Text>
+          <View>
+            <Text style={styles.subHeadingText}>Name</Text>
+          </View>
+          <TextInput
+            placeholder='Enter dish name'
+            onChangeText={(text) => {
+              setName(text);
+              setErrors({...errors, name: ''});
+            }}
+            value={name}
+            style={[styles.input, errors.name ? styles.inputError : null]}
+          />
+          {errors.name ? <Text style={styles.errorText}>{errors.name}</Text> : null}
+          <View>
+            <Text style={styles.subHeadingText}>Description</Text>
+          </View>
+          <TextInput
+            placeholder='Enter description'
+            onChangeText={(text) => {
+              setDescription(text);
+              setErrors({...errors, description: ''});
+            }}
+            value={description}
+            style={[styles.input, errors.description ? styles.inputError : null]}
+          />
+          {errors.description ? <Text style={styles.errorText}>{errors.description}</Text> : null}
+          <View>
+            <Text style={styles.subHeadingText}>Price</Text>
+          </View>
+          <TextInput
+            placeholder='Enter price'
+            onChangeText={(text) => {
+              setPrice(text);
+              setErrors({...errors, price: ''});
+            }}
+            value={price}
+            keyboardType="numeric"
+            style={[styles.input, errors.price ? styles.inputError : null]}
+          />
+          {errors.price ? <Text style={styles.errorText}>{errors.price}</Text> : null}
+          <View>
+            <Text style={styles.subHeadingText}>Courses</Text>
+          </View>
+          <View style={[styles.pickerContainer, errors.course ? styles.inputError : null]}>
+            <Picker
+              onValueChange={(itemValue: string) => { 
+                setCourse(itemValue);
+                setErrors({...errors, course: ''});
+              }}
+              selectedValue={course}
+              style={styles.picker}
+            >
+              <Picker.Item label="Select a course" value="" />
+              {courseArray.map((item) => (
+                <Picker.Item label={item.name} value={item.name} key={item.id} />
+              ))}
+            </Picker>
+          </View>
+          {errors.course ? <Text style={styles.errorText}>{errors.course}</Text> : null}
+        </View>
+        <View style={styles.buttonContainer}>
+          <TouchableHighlight onPress={handleSaveDish} style={styles.button}>
+            <Text style={styles.buttonText}>SAVE</Text>
+          </TouchableHighlight>
+        </View>
       </View>
     </ScrollView>
   );
@@ -176,6 +199,13 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
   },
+  formHeaderText: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#1E0E62',
+    marginBottom: 10,
+  },
   inputContainer: {
     padding: 10,
     width: '80%',
@@ -199,7 +229,7 @@ const styles = StyleSheet.create({
   picker: {
     justifyContent: 'center',
     alignContent: 'center',
-    padding: 30,
+    padding: 20,
     backgroundColor: '#fff',
   },
   buttonContainer: {
@@ -221,7 +251,7 @@ const styles = StyleSheet.create({
   },
   arrayContainer: {
     padding: 10,
-    height: 324,
+    height: 280,
     width: '100%',
     marginBottom: 10,
   },
@@ -248,6 +278,15 @@ const styles = StyleSheet.create({
   },
   subHeadingText: {
     fontSize: 24,
+    color: '#1E0E62',
+  },
+  inputError: {
+    borderColor: 'red',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 18,
+    marginBottom: 10,
   },
 });
 

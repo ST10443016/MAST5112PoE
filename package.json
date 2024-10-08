@@ -10,11 +10,13 @@
   },
   "dependencies": {
     "@react-native-picker/picker": "^2.8.1",
-    "expo": "~51.0.28",
+    "expo": "~51.0.37",
     "expo-file-system": "~17.0.1",
     "expo-status-bar": "~1.12.1",
+    "font": "^0.0.4",
     "react": "18.2.0",
-    "react-native": "0.74.5"
+    "react-native": "0.74.5",
+    "undefined": "@expo-google-fonts/DM+Sans"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
