@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableHighlight,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
 
 import { Picker } from '@react-native-picker/picker';
@@ -83,7 +84,8 @@ function App(): JSX.Element {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView>
+      <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Christoffel</Text>
       </View>
@@ -99,18 +101,27 @@ function App(): JSX.Element {
         ))}
       </View>
       <View style={styles.inputContainer}>
+        <View>
+          <Text style={styles.subHeadingText}>Name</Text>
+        </View>
         <TextInput
           placeholder='Enter dish name'
           onChangeText={setName}
           value={name}
           style={styles.input}
         />
+        <View>
+          <Text style={styles.subHeadingText}>Description</Text>
+        </View>
         <TextInput
           placeholder='Enter description'
           onChangeText={setDescription}
           value={description}
           style={styles.input}
         />
+        <View>
+          <Text style={styles.subHeadingText}>Price</Text>
+        </View>
         <TextInput
           placeholder='Enter price'
           onChangeText={setPrice}
@@ -118,6 +129,10 @@ function App(): JSX.Element {
           keyboardType="numeric"
           style={styles.input}
         />
+        <View>
+          <Text style={styles.subHeadingText}>Courses</Text>
+        </View>
+        <View style={styles.pickerContainer}>
         <Picker
           onValueChange={(itemValue: string) => { setCourse(itemValue); }}
           selectedValue={course}
@@ -127,13 +142,15 @@ function App(): JSX.Element {
             <Picker.Item label={item.name} value={item.name} key={item.id} />
           ))}
         </Picker>
+        </View>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableHighlight onPress={handleSaveDish} style={styles.button}>
           <Text style={styles.buttonText}>SAVE</Text>
         </TouchableHighlight>
       </View>
-    </View>
+      </View>
+    </ScrollView>
   );
 }
 
@@ -143,81 +160,94 @@ const styles = StyleSheet.create({
     //justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#f8f9fa',
-    //padding: 20,
+    paddingTop: 20,
   },
   header: {
     backgroundColor: '#1E0E62',
-    padding: 15,
-    borderRadius: 10,
+    padding: 20,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
     marginBottom: 20,
     width: '100%',
   },
   headerText: {
     textAlign: 'center',
-    fontSize: 28,
+    fontSize: 48,
     color: '#fff',
     fontWeight: 'bold',
   },
   inputContainer: {
     padding: 10,
-    width: '100%',
+    width: '80%',
   },
   input: {
-    height: 40,
+    fontSize: 20,
     borderColor: '#1E0E62',
     borderWidth: 1,
     borderRadius: 10,
     padding: 10,
-    marginBottom: 10,
+    marginBottom: 20,
     backgroundColor: '#fff',
   },
-  picker: {
-    height: 40,
+  pickerContainer: {
     borderColor: '#1E0E62',
     borderWidth: 1,
     borderRadius: 10,
+    overflow: 'hidden',
+    marginBottom: 20,
+  },
+  picker: {
+    justifyContent: 'center',
+    alignContent: 'center',
+    padding: 30,
     backgroundColor: '#fff',
   },
   buttonContainer: {
+    marginBottom: 20,
     padding: 10,
     alignItems: 'center',
-    marginBottom: 20,
   },
   button: {
     backgroundColor: '#ff8c00',
     padding: 15,
     borderRadius: 20,
-    width: 150,
+    width: 130,
   },
   buttonText: {
     textAlign: 'center',
     color: '#fff',
-    fontSize: 18,
+    fontSize: 24,
     fontWeight: 'bold',
   },
   arrayContainer: {
     padding: 10,
+    height: 324,
     width: '100%',
+    marginBottom: 10,
   },
   arrayHeaderText: {
-    fontSize: 25,
+    fontSize: 48,
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#1E0E62',
     marginBottom: 10,
   },
   arrayText: {
-    fontSize: 20,
+    fontSize: 24,
     textAlign: 'center',
     color: '#333',
+
   },
   summaryText: {
-    fontSize: 25,
+    fontSize: 24,
     fontWeight: 'bold',
     marginTop: 5,
-    marginBottom: 10,
+    marginBottom: 5,
     color: '#333',
     textAlign: 'center',
+  },
+  subHeadingText: {
+    fontSize: 24,
   },
 });
 
