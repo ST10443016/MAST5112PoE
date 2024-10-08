@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     padding: 10,
-    marginBottom: 20,
+    marginBottom: 10,
     backgroundColor: '#fff',
   },
   pickerContainer: {
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   buttonContainer: {
-    marginBottom: 20,
+    marginBottom: 10,
     padding: 10,
     alignItems: 'center',
   },
