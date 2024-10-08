@@ -90,6 +90,14 @@ function App(): JSX.Element {
       <View>
         <Text style={styles.summaryText}>Total: {totalMenuItems}</Text>
       </View>
+      <View style={styles.arrayContainer}>
+        <Text style={styles.arrayHeaderText}>Menu</Text>
+        {menulist.map((menu, index) => (
+          <Text key={index} style={styles.arrayText}>
+            {menu.name} - {menu.description} - R{menu.price} - {menu.course}
+          </Text>
+        ))}
+      </View>
       <View style={styles.inputContainer}>
         <TextInput
           placeholder='Enter dish name'
@@ -125,14 +133,6 @@ function App(): JSX.Element {
           <Text style={styles.buttonText}>SAVE</Text>
         </TouchableHighlight>
       </View>
-      <View style={styles.arrayContainer}>
-        <Text style={styles.arrayHeaderText}>Menu</Text>
-        {menulist.map((menu, index) => (
-          <Text key={index} style={styles.arrayText}>
-            {menu.name} - {menu.description} - R{menu.price} - {menu.course}
-          </Text>
-        ))}
-      </View>
     </View>
   );
 }
@@ -140,10 +140,10 @@ function App(): JSX.Element {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    //justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#f8f9fa',
-    padding: 20,
+    //padding: 20,
   },
   header: {
     backgroundColor: '#1E0E62',
@@ -200,19 +200,19 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   arrayHeaderText: {
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#1E0E62',
     marginBottom: 10,
   },
   arrayText: {
-    fontSize: 16,
+    fontSize: 20,
     textAlign: 'center',
     color: '#333',
   },
   summaryText: {
-    fontSize: 16,
+    fontSize: 25,
     fontWeight: 'bold',
     marginTop: 5,
     marginBottom: 10,
